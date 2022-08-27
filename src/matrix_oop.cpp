@@ -272,27 +272,3 @@ Matrix Matrix::inverse_matrix() {
     }
     return B;
 }
-
-// int main () {
-//     Matrix A(3, 3), B(3,3);
-//   fillMatrix(A, 1);
-//   fillMatrix(B, 1);
-//   Matrix C(3,3);
-//   C(0, 0) = 2;
-//   C(0, 1) = 4;
-//   C(0, 2) = 6;
-//   C(1, 0) = 8;
-//   C(1, 1) = 10;
-//   C(1, 2) = 12;
-//   C(2, 0) = 14;
-//   C(2, 1) = 16;
-//   C(2, 2) = 18;
-//   A = A + A;
-//   B += B;
-//   A.print();
-//   B.print();
-//   bool check_1 = A.eq_matrix(C);
-//   cout << check_1 << endl;
-//   bool check_2 = B.eq_matrix(C);
-//   cout << check_2 << endl;
-// }
