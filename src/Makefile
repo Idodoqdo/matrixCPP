@@ -1,17 +1,17 @@
 CC = g++
 FLAGS = -Wall -Wextra -Werror -std=c++17
 GCOV_FLAG = -fprofile-arcs -ftest-coverage 
-LIB = s21_matrix_oop
+LIB = matrix_oop
 
-all: s21_matrix_oop.a test
+all: matrix_oop.a test
 
-s21_matrix_oop.a: clean
+matrix_oop.a: clean
 	$(CC) -c $(FLAGS) $(LIB).cpp -o $(LIB).o
 	ar rcs $(LIB).a $(LIB).o
 	ranlib $@
 
 test: clean
-	$(CC) $(GCOV_FLAG) s21_matrix_oop.cpp test.cpp -o test -lgtest
+	$(CC) $(GCOV_FLAG) matrix_oop.cpp test.cpp -o test -lgtest
 	./test
 
 cppcheck:

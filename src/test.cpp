@@ -1,8 +1,8 @@
 #include <gtest/gtest.h>
 
-#include "s21_matrix_oop.h"
+#include "matrix_oop.h"
 
-void zapolnenie(S21Matrix & A, double num) {
+void zapolnenie(Matrix & A, double num) {
   for (int r = 0; r < A.get_rows(); r++) {
     for (int c = 0; c < A.get_cols(); c++) {
       A(r, c) = num++;
@@ -11,9 +11,9 @@ void zapolnenie(S21Matrix & A, double num) {
 }
 
 TEST(ConstructorTest, default_and_parametrs) {
-  S21Matrix A(3, 3);
+  Matrix A(3, 3);
   zapolnenie(A, 3);
-  S21Matrix B(3, 3);
+  Matrix B(3, 3);
   zapolnenie(B, 3);
   bool check = A.eq_matrix(B);
   EXPECT_EQ(check, true);
@@ -22,10 +22,10 @@ TEST(ConstructorTest, default_and_parametrs) {
 }
 
 TEST(ConstructorTest, copy_move) {
-  S21Matrix A;
+  Matrix A;
   zapolnenie(A, 1);
-  S21Matrix B(A);
-  S21Matrix C = std::move(A);
+  Matrix B(A);
+  Matrix C = std::move(A);
   bool check = B.eq_matrix(C);
   EXPECT_EQ(check, true);
   EXPECT_EQ(B.get_rows(), C.get_rows());
@@ -35,7 +35,7 @@ TEST(ConstructorTest, copy_move) {
 }
 
 TEST(OperatorsTest, assign_eq) {
-  S21Matrix A, B;
+  Matrix A, B;
   zapolnenie(A, 3);
   B = A;
   bool check = A == B;
@@ -43,10 +43,10 @@ TEST(OperatorsTest, assign_eq) {
 }
 
 TEST(OperatorsTest, plus) {
-  S21Matrix A(3, 3), B(3,3);
+  Matrix A(3, 3), B(3,3);
   zapolnenie(A, 2);
   zapolnenie(B, 2);
-  S21Matrix C(3,3);
+  Matrix C(3,3);
   C(0, 0) = 4;
   C(0, 1) = 6;
   C(0, 2) = 8;
@@ -65,10 +65,10 @@ TEST(OperatorsTest, plus) {
 }
 
 TEST(OperatorsTest, minus) {
-  S21Matrix A(3, 3), B(3, 3);
+  Matrix A(3, 3), B(3, 3);
   zapolnenie(A, 2.1);
   zapolnenie(B, 1);
-  S21Matrix C(3, 3);
+  Matrix C(3, 3);
   C(0, 0) = 1.1;
   C(0, 1) = 1.1;
   C(0, 2) = 1.1;
@@ -88,10 +88,10 @@ TEST(OperatorsTest, minus) {
 }
 
 TEST(OperatorsTest, multiplication_number) {
-  S21Matrix A(3, 3), B(3, 3);
+  Matrix A(3, 3), B(3, 3);
   zapolnenie(A, 2);
   zapolnenie(B, 2);
-  S21Matrix C(3, 3);
+  Matrix C(3, 3);
   C(0, 0) = 20;
   C(0, 1) = 30;
   C(0, 2) = 40;
@@ -110,7 +110,7 @@ TEST(OperatorsTest, multiplication_number) {
 }
 
 TEST(OperatorsTest, multiplication) {
-  S21Matrix A, B, C;
+  Matrix A, B, C;
   A(0, 0) = 1;
   A(0, 1) = 1;
   A(0, 2) = 1;
@@ -140,10 +140,10 @@ TEST(OperatorsTest, multiplication) {
   C(2, 0) = 9;
   C(2, 1) = 18;
   C(2, 2) = 27;
-  S21Matrix res = A * B;
+  Matrix res = A * B;
   EXPECT_EQ(res == C, true);
 
-  S21Matrix D, F;
+  Matrix D, F;
   zapolnenie(D, 1.0);
   D *= D;
   F(0, 0) = 30;
@@ -159,7 +159,7 @@ TEST(OperatorsTest, multiplication) {
 }
 
 TEST(MethodsTest, sum_matrix) {
-  S21Matrix A, B;
+  Matrix A, B;
   zapolnenie(A, 1);
   B(0, 0) = 2;
   B(0, 1) = 4;
@@ -176,7 +176,7 @@ TEST(MethodsTest, sum_matrix) {
 }
 
 TEST(MethodsTest, sub_matrix) {
-  S21Matrix A, B, C;
+  Matrix A, B, C;
   C(0, 0) = 9.1;
   C(0, 1) = 9.1;
   C(0, 2) = 9.1;
@@ -194,7 +194,7 @@ TEST(MethodsTest, sub_matrix) {
 }
 
 TEST(MethodsTest, mul_number) {
-  S21Matrix A, B;
+  Matrix A, B;
   zapolnenie(A, 1.1);
   B(0, 0) = 11.0;
   B(0, 1) = 21.0;
@@ -211,7 +211,7 @@ TEST(MethodsTest, mul_number) {
 }
 
 TEST(MethodsTest, mul_matrix) {
-  S21Matrix A, B, C;
+  Matrix A, B, C;
   zapolnenie(A, 1);
   zapolnenie(B, 10);
   C(0, 0) = 84;
@@ -229,10 +229,10 @@ TEST(MethodsTest, mul_matrix) {
 }
 
 TEST(MethodsTest, transpose) {
-  S21Matrix A;
+  Matrix A;
   zapolnenie(A, 1);
-  S21Matrix B = A.transpose();
-  S21Matrix C;
+  Matrix B = A.transpose();
+  Matrix C;
   C(0, 0) = 1.0;
   C(0, 1) = 4.0;
   C(0, 2) = 7.0;
@@ -246,10 +246,10 @@ TEST(MethodsTest, transpose) {
 }
 
 TEST(MethodsTest, determinant) {
-  S21Matrix A;
+  Matrix A;
   zapolnenie(A, 10);
   ASSERT_NEAR(A.determinant(), 0, EPS);
-  S21Matrix B;
+  Matrix B;
   B(0, 0) = 1.0;
   B(0, 1) = 7.0;
   B(0, 2) = 5.0;
@@ -263,7 +263,7 @@ TEST(MethodsTest, determinant) {
 }
 
 TEST(MethodsTest, calc_complements) {
-  S21Matrix A;
+  Matrix A;
   A(0, 0) = 1.0;
   A(0, 1) = 2.0;
   A(0, 2) = 3.0;
@@ -273,7 +273,7 @@ TEST(MethodsTest, calc_complements) {
   A(2, 0) = 5.0;
   A(2, 1) = 2.0;
   A(2, 2) = 1.0;
-  S21Matrix B;
+  Matrix B;
   B(0, 0) = 0.0;
   B(0, 1) = 10.0;
   B(0, 2) = -20.0;
@@ -283,9 +283,9 @@ TEST(MethodsTest, calc_complements) {
   B(2, 0) = -8.0;
   B(2, 1) = -2.0;
   B(2, 2) = 4.0;
-  S21Matrix C = A.calc_complements();
+  Matrix C = A.calc_complements();
   EXPECT_EQ(B == C, true);
-  S21Matrix AA;
+  Matrix AA;
   AA(0, 0) = 1.0;
   AA(0, 1) = 1.0;
   AA(0, 2) = 1.0;
@@ -295,7 +295,7 @@ TEST(MethodsTest, calc_complements) {
   AA(2, 0) = 1.0;
   AA(2, 1) = 1.0;
   AA(2, 2) = 1.0;
-  S21Matrix BB;
+  Matrix BB;
   BB(0, 0) = 0.0;
   BB(0, 1) = 0.0;
   BB(0, 2) = 0.0;
@@ -305,12 +305,12 @@ TEST(MethodsTest, calc_complements) {
   BB(2, 0) = 0.0;
   BB(2, 1) = 0.0;
   BB(2, 2) = 0.0;
-  S21Matrix CC = AA.calc_complements();
+  Matrix CC = AA.calc_complements();
   EXPECT_EQ(BB == CC, true);
 }
 
 TEST(MethodsTest, inverse_matrix) {
-  S21Matrix A;
+  Matrix A;
   A(0, 0) = 2.0;
   A(0, 1) = 5.0;
   A(0, 2) = 7.0;
@@ -320,8 +320,8 @@ TEST(MethodsTest, inverse_matrix) {
   A(2, 0) = 5.0;
   A(2, 1) = -2.0;
   A(2, 2) = -3.0;
-  S21Matrix B = A.inverse_matrix();
-  S21Matrix C;
+  Matrix B = A.inverse_matrix();
+  Matrix C;
   C(0, 0) = 1.0;
   C(0, 1) = -1.0;
   C(0, 2) = 1.0;
@@ -334,11 +334,11 @@ TEST(MethodsTest, inverse_matrix) {
 }
 
 TEST(MethodsTest, assesor_mutator) {
-  S21Matrix A;
+  Matrix A;
   zapolnenie(A, 1);
   EXPECT_EQ(A.get_rows(), 3);
   EXPECT_EQ(A.get_cols(), 3);
-  S21Matrix B(6,6);  
+  Matrix B(6,6);  
   EXPECT_EQ(B.get_rows(), 6);
   EXPECT_EQ(B.get_cols(), 6);
 }

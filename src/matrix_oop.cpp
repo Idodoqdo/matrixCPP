@@ -1,13 +1,13 @@
-#include "s21_matrix_oop.h"
+#include "matrix_oop.h"
 
-S21Matrix::~S21Matrix() {
+Matrix::~Matrix() {
     for (unsigned int i = 0; i < rows; i++)
     delete [] matrix[i];
     delete [] matrix;
     matrix = nullptr;
 }
 
-S21Matrix::S21Matrix(unsigned int r, unsigned int c) {
+Matrix::Matrix(unsigned int r, unsigned int c) {
         rows = r;
         cols = c;
         matrix = new double *[r]();
@@ -16,7 +16,7 @@ S21Matrix::S21Matrix(unsigned int r, unsigned int c) {
         }
 }
 
-S21Matrix::S21Matrix() {
+Matrix::Matrix() {
     rows = 3;
     cols = 3;
     matrix = new double *[rows]();
@@ -27,7 +27,7 @@ S21Matrix::S21Matrix() {
 
 
 
-S21Matrix::S21Matrix(S21Matrix &&other) {
+Matrix::Matrix(Matrix &&other) {
     matrix = other.matrix;
     cols = other.cols;
     rows = other.rows;
@@ -36,7 +36,7 @@ S21Matrix::S21Matrix(S21Matrix &&other) {
     other.rows = 0;
 }
 
-void S21Matrix::operator = (S21Matrix &&other) {
+void Matrix::operator = (Matrix &&other) {
     for (unsigned int i = 0; i < rows; i++) {
     delete [] matrix[i];
     }
@@ -49,15 +49,15 @@ void S21Matrix::operator = (S21Matrix &&other) {
     other.rows = 0;
 }
 
-int S21Matrix::get_rows() const {
+int Matrix::get_rows() const {
     return rows;
 }
 
-int S21Matrix::get_cols() const {
+int Matrix::get_cols() const {
     return cols;
 }
 
-void S21Matrix::operator = (const S21Matrix &other) {
+void Matrix::operator = (const Matrix &other) {
 if (this != &other) {
 for (unsigned int i = 0; i < rows; i++) {
     delete [] matrix[i];
@@ -75,58 +75,58 @@ for (unsigned int i = 0; i < rows; i++) {
 }
 }
 
-S21Matrix S21Matrix::operator + (const S21Matrix & other) {
-    S21Matrix C = *this;
+Matrix Matrix::operator + (const Matrix & other) {
+    Matrix C = *this;
     C.sum_matrix(other);
     return C;
 }
 
-S21Matrix S21Matrix::operator - (const S21Matrix & other) {
-    S21Matrix C = *this;
+Matrix Matrix::operator - (const Matrix & other) {
+    Matrix C = *this;
     C.sub_matrix(other);
     return C;
 }
 
-S21Matrix S21Matrix::operator * (const S21Matrix & other) {
-    S21Matrix C = *this;
+Matrix Matrix::operator * (const Matrix & other) {
+    Matrix C = *this;
     C.mul_matrix(other);
     return C;
 }
 
-S21Matrix S21Matrix::operator * (const double num) {
-    S21Matrix C = *this;
+Matrix Matrix::operator * (const double num) {
+    Matrix C = *this;
     C.mul_number(num);
     return C;
 }
 
-bool S21Matrix::operator==(const S21Matrix &other) {
+bool Matrix::operator==(const Matrix &other) {
     return eq_matrix(other);
 }
 
-void S21Matrix::operator+=(const S21Matrix &other) {
+void Matrix::operator+=(const Matrix &other) {
     return sum_matrix(other);
 }
 
-void S21Matrix::operator-=(const S21Matrix &other) {
+void Matrix::operator-=(const Matrix &other) {
     return sub_matrix(other);
 }
 
-void S21Matrix::operator*=(const S21Matrix &other) {
+void Matrix::operator*=(const Matrix &other) {
     return mul_matrix(other);
 }
 
-void S21Matrix::operator*=(const double num) {
+void Matrix::operator*=(const double num) {
     return mul_number(num);
 }
 
-double & S21Matrix::operator ()(unsigned int i, unsigned int j) {
+double & Matrix::operator ()(unsigned int i, unsigned int j) {
     if (i >= rows || j >= cols) {
         throw std::out_of_range("Matrix indices entered incorrectly");
     }
     return matrix[i][j];
 }
 
-S21Matrix::S21Matrix(const S21Matrix &other) {
+Matrix::Matrix(const Matrix &other) {
     cols = other.cols;
     rows = other.rows;
     matrix = new double *[other.rows]();
@@ -138,7 +138,7 @@ S21Matrix::S21Matrix(const S21Matrix &other) {
     }
 }
 
-bool S21Matrix::eq_matrix(const S21Matrix & other) {
+bool Matrix::eq_matrix(const Matrix & other) {
 bool flag = true;
 if (rows == other.rows && cols == other.cols) {
     for (unsigned int i = 0; i < rows; i++) {
@@ -155,13 +155,13 @@ if (rows == other.rows && cols == other.cols) {
 return flag;
 }
 
-bool equal(const S21Matrix &first, const S21Matrix &second) {
+bool equal(const Matrix &first, const Matrix &second) {
     bool flag = true;
     if (first.get_cols() != second.get_cols() || first.get_rows() != second.get_rows()) flag = false;
     return flag;
 }
 
-void S21Matrix::sum_matrix(const S21Matrix& other) {
+void Matrix::sum_matrix(const Matrix& other) {
     if (equal(*this, other)) {
         for (unsigned int i = 0; i < other.rows; i++) {
             for (unsigned int j = 0; j < other.cols; j++) {
@@ -171,7 +171,7 @@ void S21Matrix::sum_matrix(const S21Matrix& other) {
     }
 }
 
-void S21Matrix::sub_matrix(const S21Matrix& other) {
+void Matrix::sub_matrix(const Matrix& other) {
     if (equal(*this, other)) {
          for (unsigned int i = 0; i < other.rows; i++) {
             for (unsigned int j = 0; j < other.cols; j++) {
@@ -181,7 +181,7 @@ void S21Matrix::sub_matrix(const S21Matrix& other) {
     }
 }
 
-void S21Matrix::mul_number(const double num) {
+void Matrix::mul_number(const double num) {
     for (unsigned int i = 0; i < rows; i++) {
        for (unsigned int j = 0; j < cols; j++) {
            matrix[i][j] *= num;
@@ -189,8 +189,8 @@ void S21Matrix::mul_number(const double num) {
     }
 }
 
-void S21Matrix::mul_matrix(const S21Matrix& other) {
-  S21Matrix C(rows, other.cols);
+void Matrix::mul_matrix(const Matrix& other) {
+  Matrix C(rows, other.cols);
   for (unsigned int i = 0; i < C.rows; i++) {
     for (unsigned int j = 0; j < C.cols; j++) {
         for (unsigned int k = 0; k < other.rows; k++) {
@@ -201,8 +201,8 @@ void S21Matrix::mul_matrix(const S21Matrix& other) {
   *this = std::move(C);
 }
 
-S21Matrix S21Matrix::transpose() {
-    S21Matrix B(cols, rows);
+Matrix Matrix::transpose() {
+    Matrix B(cols, rows);
     for (unsigned int i = 0; i < rows; i++) {
         for (unsigned int j = 0; j < cols; j++) {
             B.matrix[j][i] = matrix[i][j];
@@ -211,8 +211,8 @@ S21Matrix S21Matrix::transpose() {
     return B;
 }
 
-S21Matrix S21Matrix::minor(unsigned int i, unsigned int j) {
-    S21Matrix B(rows - 1, cols - 1);
+Matrix Matrix::minor(unsigned int i, unsigned int j) {
+    Matrix B(rows - 1, cols - 1);
     unsigned int str = 0;
     unsigned int stb = 0;
     for (unsigned int k = 0; k < rows; k++) {
@@ -228,7 +228,7 @@ S21Matrix S21Matrix::minor(unsigned int i, unsigned int j) {
     return B;
 }
 
-double S21Matrix::determinant() {
+double Matrix::determinant() {
     double rez = 0;
     if (rows == cols) {
         if (cols == 1) {
@@ -237,7 +237,7 @@ double S21Matrix::determinant() {
             rez = matrix[0][0] * matrix[1][1] - matrix[1][0] * matrix[0][1];
         } else {
             int i = 0;
-            S21Matrix B;
+            Matrix B;
             for (unsigned int j = 0; j < cols; j++) {
                 B = minor(i, j);
                 rez += pow(-1, i+j) * matrix[i][j] * B.determinant();
@@ -247,10 +247,10 @@ double S21Matrix::determinant() {
     return rez;
 }
 
-S21Matrix S21Matrix::calc_complements() {
-    S21Matrix C(rows, cols);
+Matrix Matrix::calc_complements() {
+    Matrix C(rows, cols);
     if (rows == cols) {
-        S21Matrix B;
+        Matrix B;
         for (unsigned int i = 0; i < rows; i++) {
             for (unsigned int j = 0; j < cols; j++) {
                 double rez = 0;
@@ -263,10 +263,10 @@ S21Matrix S21Matrix::calc_complements() {
     return C;
 }
 
-S21Matrix S21Matrix::inverse_matrix() {
-    S21Matrix B;
+Matrix Matrix::inverse_matrix() {
+    Matrix B;
     if (rows == cols && determinant() != 0) {
-        S21Matrix C = calc_complements();
+        Matrix C = calc_complements();
         B = C.transpose();
         B.mul_number(1/determinant());
     }
@@ -274,10 +274,10 @@ S21Matrix S21Matrix::inverse_matrix() {
 }
 
 // int main () {
-//     S21Matrix A(3, 3), B(3,3);
+//     Matrix A(3, 3), B(3,3);
 //   fillMatrix(A, 1);
 //   fillMatrix(B, 1);
-//   S21Matrix C(3,3);
+//   Matrix C(3,3);
 //   C(0, 0) = 2;
 //   C(0, 1) = 4;
 //   C(0, 2) = 6;
